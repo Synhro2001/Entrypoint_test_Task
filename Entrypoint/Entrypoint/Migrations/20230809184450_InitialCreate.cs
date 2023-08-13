@@ -19,8 +19,8 @@ namespace Entrypoint.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false)
+                    BirthDate = table.Column<DateTime>(nullable: false),
+                    Gender = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

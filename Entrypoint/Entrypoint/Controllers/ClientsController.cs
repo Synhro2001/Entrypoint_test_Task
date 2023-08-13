@@ -20,29 +20,22 @@ namespace Entrypoint.Controllers
         }
 
         // GET: Clients
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-              return _context.Client != null ? 
-                          View(await _context.Client.ToListAsync()) :
-                          Problem("Entity set 'EntrypointContext.Client'  is null.");
-        }
+            var clients = _context.Client
+                .Select(c => new ClientViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Email = c.Email,
+                    BirthDate = c.BirthDate,
+                    Gender = c.Gender,
+                    NumberOfOrders = c.Orders.Count,
+                    AverageOrderAmount = c.Orders.Count() > 0 ? c.Orders.Sum(x => (x.Quantity * x.Product.Price)) / c.Orders.Count() : 0
+                })
+                .ToList();
 
-        // GET: Clients/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Client == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Client
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            return View(client);
+            return View(clients);
         }
 
         // GET: Clients/Create
@@ -58,6 +51,7 @@ namespace Entrypoint.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,BirthDate,Gender")] Client client)
         {
+           
             if (ModelState.IsValid)
             {
                 _context.Add(client);
@@ -90,11 +84,12 @@ namespace Entrypoint.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,BirthDate,Gender")] Client client)
         {
+
             if (id != client.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Orders");
             if (ModelState.IsValid)
             {
                 try
@@ -157,7 +152,7 @@ namespace Entrypoint.Controllers
 
         private bool ClientExists(int id)
         {
-          return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Client.Any(e => e.Id == id);
         }
     }
 }

@@ -27,24 +27,6 @@ namespace Entrypoint.Controllers
                           Problem("Entity set 'EntrypointContext.Product'  is null.");
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Product == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
         // GET: Products/Create
         public IActionResult Create()
         {

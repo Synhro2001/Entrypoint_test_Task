@@ -19,5 +19,6 @@ namespace Entrypoint.Data
         public DbSet<Entrypoint.Models.Product> Product { get; set; } = default!;
 
         public DbSet<Entrypoint.Models.Order> Order { get; set; } = default!;
+
     }
 }

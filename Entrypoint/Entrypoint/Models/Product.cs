@@ -15,6 +15,5 @@ namespace Entrypoint.Models
         [Required(ErrorMessage = "Please enter a valid price.")]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-
     }
 }

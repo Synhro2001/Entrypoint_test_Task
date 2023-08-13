@@ -20,36 +20,28 @@ namespace Entrypoint.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var entrypointContext = _context.Order.Include(o => o.Client).Include(o => o.Product);
-            return View(await entrypointContext.ToListAsync());
-        }
+            var orders = _context.Order
+                .Select(o => new OrderViewsModel
+                {
+                    Id = o.Id,
+                    ClientId = o.ClientId,
+                    Client = o.Client,
+                    ProductId = o.ProductId,
+                    Product = o.Product,
+                    Quantity = o.Quantity,
+                    QuantitySum = (int)(o.Quantity * o.Product.Price),
+                    Status = o.Status
+                }).ToList();
 
-        // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Order == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Order
-                .Include(o => o.Client)
-                .Include(o => o.Product)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
-        }
+            return View(orders);
+        } 
 
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Email");
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Name");
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Code");
             return View();
         }
@@ -61,13 +53,15 @@ namespace Entrypoint.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ClientId,ProductId,Quantity,Status")] Order order)
         {
+          
             if (ModelState.IsValid)
             {
+             
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Email", order.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Name", order.ClientId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Code", order.ProductId);
             return View(order);
         }
@@ -85,7 +79,7 @@ namespace Entrypoint.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Email", order.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Name", order.ClientId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Code", order.ProductId);
             return View(order);
         }
@@ -122,7 +116,7 @@ namespace Entrypoint.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Email", order.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Name", order.ClientId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Code", order.ProductId);
             return View(order);
         }
