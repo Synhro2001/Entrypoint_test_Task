@@ -31,7 +31,7 @@ namespace Entrypoint.Controllers
                     ProductId = o.ProductId,
                     Product = o.Product,
                     Quantity = o.Quantity,
-                    QuantitySum = (int)(o.Quantity * o.Product.Price),
+                    QuantitySum = (o.Quantity * o.Product.Price),
                     Status = o.Status
                 }).ToList();
 
@@ -53,10 +53,10 @@ namespace Entrypoint.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ClientId,ProductId,Quantity,Status")] Order order)
         {
-          
+
             if (ModelState.IsValid)
             {
-             
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

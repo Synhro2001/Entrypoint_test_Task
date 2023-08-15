@@ -1,7 +1,7 @@
 ﻿@model Entrypoint.Models.Product
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Edit</h1>
@@ -28,7 +28,7 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-4">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

@@ -1,7 +1,7 @@
 ﻿@model Entrypoint.Models.Client
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Edit</h1>
@@ -33,7 +33,7 @@
                 <select asp-for="Gender" asp-items="Html.GetEnumSelectList<GenderTypes>()" class="form-control"></select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-4">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

@@ -51,7 +51,7 @@ namespace Entrypoint.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,BirthDate,Gender")] Client client)
         {
-           
+           // ModelState.Remove("Orders");
             if (ModelState.IsValid)
             {
                 _context.Add(client);
